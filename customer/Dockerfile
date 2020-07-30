@@ -1,4 +1,4 @@
-FROM java:8 AS build-java
+FROM openjdk:8 AS build-java
 
 # Install maven
 RUN echo "deb [check-valid-until=no] http://cdn-fastly.deb.debian.org/debian jessie main" > /etc/apt/sources.list.d/jessie.list
@@ -10,7 +10,7 @@ WORKDIR /code
 
 # # Prepare by downloading dependencies
 ADD pom.xml /code/pom.xml
-# RUN ["mvn", "dependency:resolve"]
+RUN ["mvn", "dependency:resolve"]
 # RUN ["mvn", "verify"]
 
 # Adding source, compile and package into a fat jar

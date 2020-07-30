@@ -3,7 +3,11 @@ services:
   jaeger:
     image: jaegertracing/all-in-one:latest
     ports:
+      - "5775:5775/udp"
       - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "14268:14268"
       - "16686:16686"
     networks:
       - jaeger-demo
@@ -36,6 +40,18 @@ services:
     build: ./customer
     ports: 
       - "8082:8082"
+    networks:
+      - jaeger-demo
+    depends_on:
+      - jaeger
+
+  route:
+    build: ./route
+    ports: 
+      - "8083:8083"
+    environment:
+      - JAEGER_AGENT_HOST=jaeger
+      - JAEGER_AGENT_PORT=6832
     networks:
       - jaeger-demo
     depends_on:

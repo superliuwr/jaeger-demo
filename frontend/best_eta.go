@@ -5,7 +5,6 @@ import (
 	"errors"
 	"math"
 	"sync"
-	"time"
 
 	"github.com/opentracing/opentracing-go"
 	"go.uber.org/zap"
@@ -28,7 +27,7 @@ type bestETA struct {
 // Response contains ETA for a trip.
 type Response struct {
 	Driver string
-	ETA    time.Duration
+	ETA    int
 }
 
 func newBestETA(tracer opentracing.Tracer, logger log.Factory, options ConfigOptions) *bestETA {
@@ -87,7 +86,7 @@ func (eta *bestETA) Get(ctx context.Context, customerID string) (*Response, erro
 		return nil, errors.New("no routes found")
 	}
 
-	eta.logger.For(ctx).Info("Dispatch successful", zap.String("driver", resp.Driver), zap.String("eta", resp.ETA.String()))
+	eta.logger.For(ctx).Info("Dispatch successful", zap.String("driver", resp.Driver), zap.Int("eta", resp.ETA))
 	return resp, nil
 }
 

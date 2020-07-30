@@ -24,7 +24,7 @@ func execute() error {
 	options.FrontendHostPort = net.JoinHostPort("0.0.0.0", strconv.Itoa(8080))
 	options.DriverHostPort = net.JoinHostPort("driver", strconv.Itoa(8081))
 	options.CustomerHostPort = net.JoinHostPort("customer", strconv.Itoa(8082))
-	options.RouteHostPort = net.JoinHostPort("0.0.0.0", strconv.Itoa(8083))
+	options.RouteHostPort = net.JoinHostPort("route", strconv.Itoa(8083))
 	options.BasePath = `/`
 
 	rootLogger, _ := zap.NewDevelopment(
