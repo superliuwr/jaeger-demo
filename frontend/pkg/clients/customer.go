@@ -47,15 +47,10 @@ func (c *CustomerClient) GetCustomer(ctx context.Context, customerID string) (*C
 	url := fmt.Sprintf("http://"+c.hostPort+"/customer?customer=%s", customerID)
 	fmt.Println(url)
 
-	var customer Customer = Customer{
-		ID:       customerID,
-		Name:     "Marvin",
-		Location: "Sydney",
+	var customer Customer
+	if err := c.client.GetJSON(ctx, "/customer", url, &customer); err != nil {
+		return nil, err
 	}
-	// if err := c.client.GetJSON(ctx, "/customer", url, &customer); err != nil {
-	// 	return nil, err
-	// }
 
 	return &customer, nil
 }
-

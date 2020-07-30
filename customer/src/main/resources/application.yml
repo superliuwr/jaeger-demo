@@ -1,0 +1,8 @@
+server:
+  port: 8082
+opentracing:
+  jaeger:
+    service-name: customer
+    enabled: TRUE
+    udp-sender:
+      host: jaeger

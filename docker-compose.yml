@@ -32,5 +32,14 @@ services:
     depends_on:
       - jaeger
 
+  customer:
+    build: ./customer
+    ports: 
+      - "8082:8082"
+    networks:
+      - jaeger-demo
+    depends_on:
+      - jaeger
+
 networks:
   jaeger-demo:
