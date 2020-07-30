@@ -1,10 +1,10 @@
 # Hot R.O.D. - Rides on Demand
 
-This is a demo application that consists of several microservices and illustrates
-the use of the OpenTracing API. It can be run standalone, but requires Jaeger backend
-to view the traces. A tutorial / walkthough is available:
-  * as a blog post [Take OpenTracing for a HotROD ride][hotrod-tutorial],
-  * as a video [OpenShift Commons Briefing: Distributed Tracing with Jaeger & Prometheus on Kubernetes][hotrod-openshift].
+This is a demo application based on [Jaeger's official demo application](https://github.com/uber/jaeger/tree/master/examples/hotrod) with the microservice `customer` rewritten in Java and `route` rewritten in Node.js.
+
+## About Jaeger's official demo application
+
+It is a demo application that consists of several microservices and illustrates the use of the OpenTracing API. It can be run standalone, but requires Jaeger backend to view the traces.
 
 ## Features
 
@@ -19,57 +19,15 @@ to view the traces. A tutorial / walkthough is available:
 
 ## Running
 
-### Run everything via `docker-compose`
-
-* Download `docker-compose.yml` from https://github.com/jaegertracing/jaeger/blob/master/examples/hotrod/docker-compose.yml
-* Run Jaeger backend and HotROD demo with `docker-compose -f path-to-yml-file up`
-* Access Jaeger UI at http://localhost:16686 and HotROD app at http://localhost:8080
-* Shutdown / cleanup with `docker-compose -f path-to-yml-file down`
-
-Alternatively, you can run each component separately as described below.
-
-### Run Jaeger backend
-
-An all-in-one Jaeger backend is packaged as a Docker container with in-memory storage.
-
-```bash
-docker run \
-  --rm \
-  --name jaeger \
-  -p6831:6831/udp \
-  -p16686:16686 \
-  jaegertracing/all-in-one:latest
-```
+Run `docker-compose up -d` from the root to bring up all microservices and jaeger-all-in-one.
 
 Jaeger UI can be accessed at http://localhost:16686.
 
-### Run HotROD from source
+Then open the frontend at http://127.0.0.1:8080
 
-```bash
-git clone git@github.com:jaegertracing/jaeger.git jaeger
-cd jaeger/examples/hotrod
-go run ./main.go all
-```
+## Microservices
 
-### Run HotROD from docker
-```bash
-docker run \
-  --rm \
-  --link jaeger \
-  --env JAEGER_AGENT_HOST=jaeger \
-  --env JAEGER_AGENT_PORT=6831 \
-  -p8080-8083:8080-8083 \
-  jaegertracing/example-hotrod:latest \
-  all
-```
-
-Then open http://127.0.0.1:8080
-
-## Metrics
-
-The app exposes metrics in either Go's `expvar` format (by default) or in Prometheus format (enabled via `-m prometheus` flag).
-  * `expvar`: `curl http://127.0.0.1:8083/debug/vars`
-  * Prometheus: `curl http://127.0.0.1:8083/metrics`
-
-[hotrod-tutorial]: https://medium.com/@YuriShkuro/take-opentracing-for-a-hotrod-ride-f6e3141f7941
-[hotrod-openshift]: https://blog.openshift.com/openshift-commons-briefing-82-distributed-tracing-with-jaeger-prometheus-on-kubernetes/
+- frontend: Go
+- customer: Java/Spring Boot Application
+- driver: Go
+- route: Node.js
