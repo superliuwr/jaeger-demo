@@ -24,6 +24,7 @@ func (c *HTTPClient) GetJSON(ctx context.Context, endpoint string, url string, o
 	if err != nil {
 		return err
 	}
+
 	req = req.WithContext(ctx)
 	req, ht := nethttp.TraceRequest(c.Tracer, req, nethttp.OperationName("HTTP GET: "+endpoint))
 	defer ht.Finish()
@@ -40,8 +41,10 @@ func (c *HTTPClient) GetJSON(ctx context.Context, endpoint string, url string, o
 		if err != nil {
 			return err
 		}
+
 		return errors.New(string(body))
 	}
+
 	decoder := json.NewDecoder(res.Body)
 	return decoder.Decode(out)
 }

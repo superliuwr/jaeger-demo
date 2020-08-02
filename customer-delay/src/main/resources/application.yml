@@ -1,0 +1,11 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: customer-delay
+opentracing:
+  jaeger:
+    service-name: customer-delay
+    enabled: TRUE
+    udp-sender:
+      host: jaeger

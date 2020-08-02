@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 
-	"github.com/superliuwr/jaeger-demo/driver/pkg/log"
+	"github.com/superliuwr/jaeger-demo/driver/log"
 )
 
 // Driver describes a driver and the current car location.
@@ -23,7 +23,7 @@ type Server struct {
 	tracer   opentracing.Tracer
 	logger   log.Factory
 	redis    *Redis
-	server *grpc.Server
+	server   *grpc.Server
 }
 
 var _ DriverServiceServer = (*Server)(nil)
@@ -72,6 +72,7 @@ func (s *Server) FindNearest(ctx context.Context, location *DriverLocationReques
 	for i, driverID := range driverIDs {
 		var drv Driver
 		var err error
+
 		for i := 0; i < 3; i++ {
 			drv, err = s.redis.GetDriver(ctx, driverID)
 			if err == nil {
@@ -83,6 +84,7 @@ func (s *Server) FindNearest(ctx context.Context, location *DriverLocationReques
 			s.logger.For(ctx).Error("Failed to get driver after 3 attempts", zap.Error(err))
 			return nil, err
 		}
+
 		retMe[i] = &DriverLocation{
 			DriverID: drv.DriverID,
 			Location: drv.Location,

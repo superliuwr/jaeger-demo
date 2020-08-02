@@ -1,12 +1,12 @@
 package clients
 
 import (
-	context "context"
-	fmt "fmt"
-	math "math"
+	"context"
+	"fmt"
+	"math"
 
-	proto "github.com/gogo/protobuf/proto"
-	grpc "google.golang.org/grpc"
+	"github.com/gogo/protobuf/proto"
+	"google.golang.org/grpc"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

@@ -3,9 +3,3 @@ server:
 spring:
   application:
     name: customer
-opentracing:
-  jaeger:
-    service-name: customer
-    enabled: TRUE
-    udp-sender:
-      host: jaeger

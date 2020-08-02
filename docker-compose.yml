@@ -40,6 +40,8 @@ services:
     build: ./customer
     ports: 
       - "8082:8082"
+    environment:
+      - JAEGER_AGENT_HOST=jaeger
     networks:
       - jaeger-demo
     depends_on:
@@ -52,6 +54,27 @@ services:
     environment:
       - JAEGER_AGENT_HOST=jaeger
       - JAEGER_AGENT_PORT=6832
+    networks:
+      - jaeger-demo
+    depends_on:
+      - jaeger
+
+  route-delay:
+    build: ./route-delay
+    ports: 
+      - "8084:8084"
+    environment:
+      - JAEGER_AGENT_HOST=jaeger
+      - JAEGER_AGENT_PORT=6832
+    networks:
+      - jaeger-demo
+    depends_on:
+      - jaeger
+
+  customer-delay:
+    build: ./customer-delay
+    ports: 
+      - "8085:8085"
     networks:
       - jaeger-demo
     depends_on:

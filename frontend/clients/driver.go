@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 
-	"github.com/superliuwr/jaeger-demo/frontend/pkg/log"
+	"github.com/superliuwr/jaeger-demo/frontend/log"
 )
 
 // Driver describes a driver and the current car location.

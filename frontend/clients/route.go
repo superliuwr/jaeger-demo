@@ -9,8 +9,8 @@ import (
 	"github.com/opentracing/opentracing-go"
 	"go.uber.org/zap"
 
-	"github.com/superliuwr/jaeger-demo/frontend/pkg/log"
-	"github.com/superliuwr/jaeger-demo/frontend/pkg/tracing"
+	"github.com/superliuwr/jaeger-demo/frontend/log"
+	"github.com/superliuwr/jaeger-demo/frontend/tracing"
 )
 
 // Route describes a route between Pickup and Dropoff locations and expected time to arrival.

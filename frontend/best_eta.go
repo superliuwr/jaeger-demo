@@ -9,9 +9,9 @@ import (
 	"github.com/opentracing/opentracing-go"
 	"go.uber.org/zap"
 
-	"github.com/superliuwr/jaeger-demo/frontend/pkg/clients"
-	"github.com/superliuwr/jaeger-demo/frontend/pkg/log"
-	"github.com/superliuwr/jaeger-demo/frontend/pkg/pool"
+	"github.com/superliuwr/jaeger-demo/frontend/clients"
+	"github.com/superliuwr/jaeger-demo/frontend/log"
+	"github.com/superliuwr/jaeger-demo/frontend/pool"
 )
 
 const RouteWorkerPoolSize = 3

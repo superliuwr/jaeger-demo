@@ -1,5 +1,5 @@
 {
-  "name": "route",
+  "name": "delay",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bent": "^7.3.9",
     "express": "^4.17.1",
     "jaeger-client": "^3.18.0",
     "opentracing": "^0.14.4"

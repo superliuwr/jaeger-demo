@@ -1,76 +1,31 @@
 const express = require('express')
-const bent = require('bent')
 const { initTracerFromEnv } = require("jaeger-client")
 const opentracing = require('opentracing')
 
-const port = process.env.PORT || 8083
-const serviceName = process.env.SERVICE_NAME || 'route'
+const port = process.env.PORT || 8084
+const serviceName = process.env.SERVICE_NAME || 'route-delay'
 
 const tracer = initTracer(serviceName)
 opentracing.initGlobalTracer(tracer)
 
 // ----- Express handlers -----
-async function getRoute (req, res) {
+async function getDelay (req, res) {
   const tracer = opentracing.globalTracer()
-  const span = tracer.startSpan('getRoute', { childOf: req.span })
-
-  const pickup = req.query.pickup
-  const dropoff = req.query.dropoff
+  const span = tracer.startSpan('getDelay', { childOf: req.span })
 
   const customerInBaggage = span.getBaggageItem('customer')
 
   span.log({
       'event': 'request_params_parsed',
-      'pickup': pickup,
-      'dropoff': dropoff,
       'customer': customerInBaggage
   })
 
-  const delay = await fetchDelay(span)
-  await sleep(delay)
-
-  const response = {
-    'Pickup': pickup,
-    'Dropoff': dropoff,
-    'ETA': (Math.floor(Math.random() * 10) + 1) * (1000000 * 1000 * 60),
-  }
+  const delay = Math.floor(Math.random() * 500) + 200
 
   span.setTag('delay', delay)
-  span.setTag('response', response)
-
   span.finish()
 
-  res.json(response)
-}
-
-// ----- Calling another API -----
-async function fetchDelay(parentSpan) {
-  const tracer = opentracing.globalTracer()
-  const span = tracer.startSpan('fetchDelay', { childOf: parentSpan })
-  span.log({ event: 'fetch_delay', message: 'about to fetch delay for route service' })
-
-  const service = process.env.DELAY_SERVICE_HOST || 'delay'
-  const servicePort = process.env.DELAY_SERVICE_PORT || '8084'
-
-  const url = `http://${service}:${servicePort}/delay`
-
-  const headers = {}
-  tracer.inject(span, opentracing.FORMAT_HTTP_HEADERS, headers)
-
-  const request = bent('string', headers)
-
-  let response = { delay: 500 }
-  try {
-    response = await request(url)
-  } catch (e) {
-    span.log({
-      event: 'error',
-      err: e.message
-    })
-  }
-  
-  span.finish()
-  return response.delay || 500
+  res.json({ delay })
 }
 
 // ----- Tracing initialization -----
@@ -152,15 +107,10 @@ function tracingMiddleWare(req, res, next) {
   next()
 }
 
-// ------ Utils -----
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
-
 // ----- App -----
 const app = express()
 app.use(tracingMiddleWare)
-app.get('/route', getRoute)
+app.get('/delay', getDelay)
 app.disable('etag')
 app.listen(port, () => {
   console.log('Route app listening on port ' + port)

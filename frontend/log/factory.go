@@ -29,7 +29,6 @@ func (b Factory) Bg() Logger {
 // echo-ed into the span.
 func (b Factory) For(ctx context.Context) Logger {
 	if span := opentracing.SpanFromContext(ctx); span != nil {
-		// TODO for Jaeger span extract trace/span IDs as fields
 		return spanLogger{span: span, logger: b.logger}
 	}
 	return b.Bg()

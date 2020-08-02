@@ -8,8 +8,8 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"github.com/superliuwr/jaeger-demo/frontend/pkg/log"
-	"github.com/superliuwr/jaeger-demo/frontend/pkg/tracing"
+	"github.com/superliuwr/jaeger-demo/frontend/log"
+	"github.com/superliuwr/jaeger-demo/frontend/tracing"
 )
 
 func main() {

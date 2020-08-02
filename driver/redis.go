@@ -12,9 +12,9 @@ import (
 	"github.com/opentracing/opentracing-go/ext"
 	"go.uber.org/zap"
 
-	"github.com/superliuwr/jaeger-demo/driver/pkg/delay"
-	"github.com/superliuwr/jaeger-demo/driver/pkg/log"
-	"github.com/superliuwr/jaeger-demo/driver/pkg/tracing"
+	"github.com/superliuwr/jaeger-demo/driver/delay"
+	"github.com/superliuwr/jaeger-demo/driver/log"
+	"github.com/superliuwr/jaeger-demo/driver/tracing"
 )
 
 var (
@@ -49,9 +49,11 @@ func newRedis(logger log.Factory) *Redis {
 func (r *Redis) FindDriverIDs(ctx context.Context, location string) []string {
 	if span := opentracing.SpanFromContext(ctx); span != nil {
 		span := r.tracer.StartSpan("FindDriverIDs", opentracing.ChildOf(span.Context()))
+
 		span.SetTag("param.location", location)
 		ext.SpanKindRPCClient.Set(span)
 		defer span.Finish()
+
 		ctx = opentracing.ContextWithSpan(ctx, span)
 	}
 
@@ -72,9 +74,11 @@ func (r *Redis) FindDriverIDs(ctx context.Context, location string) []string {
 func (r *Redis) GetDriver(ctx context.Context, driverID string) (Driver, error) {
 	if span := opentracing.SpanFromContext(ctx); span != nil {
 		span := r.tracer.StartSpan("GetDriver", opentracing.ChildOf(span.Context()))
+
 		span.SetTag("param.driverID", driverID)
 		ext.SpanKindRPCClient.Set(span)
 		defer span.Finish()
+
 		ctx = opentracing.ContextWithSpan(ctx, span)
 	}
 
@@ -85,7 +89,9 @@ func (r *Redis) GetDriver(ctx context.Context, driverID string) (Driver, error) 
 		if span := opentracing.SpanFromContext(ctx); span != nil {
 			ext.Error.Set(span, true)
 		}
+
 		r.logger.For(ctx).Error("redis timeout", zap.String("driver_id", driverID), zap.Error(err))
+
 		return Driver{}, err
 	}
 

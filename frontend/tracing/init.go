@@ -8,20 +8,22 @@ import (
 	"github.com/uber/jaeger-client-go/config"
 	"go.uber.org/zap"
 
-	"github.com/superliuwr/jaeger-demo/frontend/pkg/log"
+	"github.com/superliuwr/jaeger-demo/frontend/log"
 )
 
 // Init creates a new instance of Jaeger tracer.
 func Init(serviceName string, logger log.Factory) opentracing.Tracer {
+	// Read host and port from Env Vars
 	cfg, err := config.FromEnv()
 	if err != nil {
 		logger.Bg().Fatal("cannot parse Jaeger env vars", zap.Error(err))
 	}
+
 	cfg.ServiceName = serviceName
+	// Always sample all requests
 	cfg.Sampler.Type = "const"
 	cfg.Sampler.Param = 1
 
-	// TODO(ys) a quick hack to ensure random generators get different seeds, which are based on current time.
 	time.Sleep(100 * time.Millisecond)
 	jaegerLogger := jaegerLoggerAdapter{logger.Bg()}
 
@@ -31,6 +33,7 @@ func Init(serviceName string, logger log.Factory) opentracing.Tracer {
 	if err != nil {
 		logger.Bg().Fatal("cannot initialize Jaeger Tracer", zap.Error(err))
 	}
+
 	return tracer
 }
 
