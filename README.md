@@ -42,7 +42,7 @@ It's written in Node.js and Express.
 
 ## Workflow
 
-![UI](/docs/dag.png)
+![DAG](/docs/dag.png)
 
 ## How it is different from the official demo application
 
@@ -73,8 +73,13 @@ It's written in Node.js and Express.
 
 ## Running
 
-Run `docker-compose up -d` from the root to bring up all microservices and jaeger-all-in-one.
+1. Run `docker-compose up -d` from the root to bring up all microservices and jaeger-all-in-one.
+2. Open the frontend at http://127.0.0.1:8080 and make a request by clicking on one of the customers.
+3. Wait until you see the driver and ETA is returned. A message will be displayed like this: `HotROD T758836C arriving in 1min [req: 6388-1, latency: 3456ms]`.
+4. Open Jaeger UI at http://localhost:16686. Use Firefox or Safari as there is currently a minor but annoying UI issue with Chrome when displaying spans.
+5. Choose `frontend` from the `Service` dropbox and click `Find Traces`. You should see the trace of your last call to `HTTP Get /dispatch` appearing on the right.
+6. Click on the trace and play with the spans.
 
-Jaeger UI can be accessed at http://localhost:16686.
+![Traces](/docs/traces.png)
 
-Then open the frontend at http://127.0.0.1:8080
+![Trace](/docs/trace.png)
