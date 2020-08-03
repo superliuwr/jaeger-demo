@@ -49,7 +49,7 @@ async function fetchDelay(parentSpan) {
   const span = tracer.startSpan('fetchDelay', { childOf: parentSpan })
   span.log({ event: 'fetch_delay', message: 'about to fetch delay for route service' })
 
-  const service = process.env.DELAY_SERVICE_HOST || 'delay'
+  const service = process.env.DELAY_SERVICE_HOST || 'route-delay'
   const servicePort = process.env.DELAY_SERVICE_PORT || '8084'
 
   const url = `http://${service}:${servicePort}/delay`
