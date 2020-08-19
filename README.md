@@ -2,8 +2,13 @@
 
 This is a demo application based on [one of Jaeger's official demo applications](https://github.com/uber/jaeger/tree/master/examples/hotrod) called `Hot R.O.D`.
 
-It is a oversimplified version of Uber Eats.
-In the homepage you will find a list of hardcoded customers, click on one of them to start a transaction. The application locates the customer, finds ten nearby drivers and for each driver calculates the ETA. The route with least ETA will be returned. A log is then shown in the homepage with the chosen driver's license plate and ETA(a request ID and the latency calculated on the frontend side are also displayed for demo purpose).
+It is an oversimplified version of Uber Eats.
+
+In the homepage you will find a list of hardcoded customers, click on one of them to start a transaction.
+
+The application locates the customer, finds ten nearby drivers and for each driver calculates the ETA. The route with least ETA will be returned.
+
+A log is then shown in the homepage with the chosen driver's license plate and ETA(a request ID and the latency calculated on the frontend side are also displayed for demo purpose).
 
 ![UI](/docs/ui.png)
 
@@ -11,6 +16,7 @@ In the homepage you will find a list of hardcoded customers, click on one of the
 
 ### frontend
 It's the start point of the application. It hosts a web server for the UI and also servers the backend business logic.
+
 The backend receives requests from the UI and sends requests to other components and returns the result to UI.
 
 It's written in Go.
