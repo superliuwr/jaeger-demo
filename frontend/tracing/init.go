@@ -2,7 +2,6 @@ package tracing
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/opentracing/opentracing-go"
 	"github.com/uber/jaeger-client-go/config"
@@ -24,7 +23,6 @@ func Init(serviceName string, logger log.Factory) opentracing.Tracer {
 	cfg.Sampler.Type = "const"
 	cfg.Sampler.Param = 1
 
-	time.Sleep(100 * time.Millisecond)
 	jaegerLogger := jaegerLoggerAdapter{logger.Bg()}
 
 	tracer, _, err := cfg.NewTracer(
