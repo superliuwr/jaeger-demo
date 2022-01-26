@@ -1,5 +1,5 @@
 # stage 1) Build
-FROM golang:1.13.4-alpine AS build-go
+FROM golang:1.17.6-alpine AS build-go
 
 RUN apk add --no-cache \
             bash \
@@ -15,7 +15,7 @@ COPY . /frontend
 RUN make build
 
 # stage 2) Run
-FROM golang:1.13.4-alpine
+FROM golang:1.17.6-alpine
 
 WORKDIR /app
 
